@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx';
-import React, { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal, Table } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
@@ -7,10 +7,24 @@ const { Dragger } = Upload;
 
 
 const App = (props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [jsonData, setJsonData] = useState([]);
 
+  const handelCancelModal = () => {
+    setIsModalOpen(false);
+    setJsonData([]);
+  }
+
+  const handelCreateModal = () => {
+    console.log(jsonData);
+    handelCancelModal();
+    message.success('Tạo mới người dùng thành công!');
+  }
+
+  // Cột và hàm của table API cung cấp
   const columns = [
     {
-      title: 'Key',
+      title: 'Id',
       dataIndex: 'id',
     },
     {
@@ -56,95 +70,48 @@ const App = (props) => {
     console.log('params', pagination, filters, sorter, extra);
   };
 
-  // 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-
+  // Hàm Component Upload cung cấp
   const propsUpload = {
     name: 'file',
-    multiple: true,
-    action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-    onChange(info) {
-      const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
+    multiple: false,
+    showUploadList: false,
+    customRequest: ({ file, onSuccess, onError }) => {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const jsonDataAbc = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+        setJsonData(jsonDataAbc);
+        onSuccess();
+        message.success('Upload thành công!');
+      };
+
+      reader.readAsBinaryString(file);
     },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
+    beforeUpload: (file) => {
+      if (!file) {
+        message.error('Please select a file.');
+        return false;
+      }
+
+      const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
+
+      if (!isExcel) {
+        message.error('Only Excel files are allowed.');
+      }
+
+      return isExcel;
     },
   };
-  // Tesst
-  const inputRef = useRef(null);
-  const [jsonData, setJsonData] = useState([]);
-  const [file, setFile] = useState(null);
 
-  const handleFileUpload = (event) => {
-    const files = event.target.files;
-
-    if (files.length === 0) {
-      // Nếu không có file, đặt cả file và jsonData về rỗng
-      setFile(null);
-      setJsonData([]);
-      return;
-    }
-
-    const file = files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const data = e.target.result;
-      const workbook = XLSX.read(data, { type: 'binary' });
-      const jsonDataAbc = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-      setFile(file);
-      setJsonData(jsonDataAbc);
-      console.log(jsonDataAbc);
-    };
-
-    reader.readAsBinaryString(file);
-  };
-
-
-
-  const handleClearFile = () => {
-    // Đặt cả file và jsonData về rỗng
-    setFile(null);
-    setJsonData([]);
-
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-  };
-
-  const pageSize = 3;
-
-  const paginationConfig = {
-    pageSize: pageSize,
-    total: jsonData.length,
-    showSizeChanger: false,
-  };
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={() => setIsModalOpen(true)}>
         Open Modal
       </Button>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={600}>
+      <Modal title="Upload user" open={isModalOpen} onOk={() => handelCreateModal()} onCancel={() => handelCancelModal()} width={600}>
         <Dragger {...propsUpload}>
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
@@ -155,10 +122,15 @@ const App = (props) => {
             banned files.
           </p>
         </Dragger>
-        {/* Table */}
-        <Table columns={columns} dataSource={jsonData} onChange={onChange} pagination={paginationConfig} />
-        <input ref={inputRef} type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
-        <button onClick={handleClearFile}>Clear File</button>
+        <Table
+          columns={columns}
+          dataSource={jsonData}
+          onChange={onChange}
+          pagination={{
+            pageSize: 3,
+            total: jsonData.length,
+            showSizeChanger: false
+          }} />
       </Modal>
     </>
   );
