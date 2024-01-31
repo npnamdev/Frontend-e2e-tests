@@ -1,40 +1,17 @@
-import { useState } from 'react';
-import { Button } from 'antd';
-import { message } from 'antd';
-import DeleteUser from './components/DeleteUser';
-import ModalExcelImporter from './components/ModalExcelImporter';
+import React from 'react';
+import CodeHighlighter from './components/CodeHighlighter';
 
-const App = (props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [jsonData, setJsonData] = useState([]);
-
-  const handelCancelModal = () => {
-    setIsModalOpen(false);
-    setJsonData([]);
-  }
-
-  const handelCreateModal = () => {
-    console.log(jsonData);
-    handelCancelModal();
-    message.success('Tạo mới người dùng thành công!');
-  }
+const App = () => {
+  const code = `const helloWorld = () => {
+  console.log('Hello, World!');
+};`;
 
   return (
-    <>
-      <Button type="primary" onClick={() => setIsModalOpen(true)}>
-        Open Modal
-      </Button>
-
-      <ModalExcelImporter
-        isModalOpen={isModalOpen}
-        handelCancelModal={handelCancelModal}
-        handelCreateModal={handelCreateModal}
-        jsonData={jsonData}
-        setJsonData={setJsonData}
-      />
-
-      <DeleteUser />
-    </>
+    <div>
+      <h1>React App</h1>
+      <CodeHighlighter code={code} language="javascript" />
+    </div>
   );
 };
+
 export default App;
