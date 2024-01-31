@@ -6,6 +6,7 @@ import { sublime } from '@uiw/codemirror-theme-sublime';
 import { javascript } from '@codemirror/lang-javascript';
 import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from "@codemirror/view"
+import { andromeda } from '@uiw/codemirror-theme-andromeda';
 import { useState } from 'react';
 
 import { color } from '@uiw/codemirror-extensions-color';
@@ -27,15 +28,20 @@ function App() {
   });
 
   return (
-    <CodeMirror
-      value="body { color: #333333; }"
-      height="100vh"
-      width='100%'
-      style={{fontSize: '14px'}}
-      theme={darcula}
-      extensions={[color, javascript({ jsx: true }),EditorView.lineWrapping, eventExt]}
-      onChange={(value, viewUpdate) => { console.log('value:', value);}}
-    />
+    <div className='namdev'>
+      <div className='sidebar'>
+        sidebar
+      </div>
+      <CodeMirror
+        value="body { color: #333333; }"
+        height="100vh"
+        width='100%'
+        style={{fontSize: '14px'}}
+        theme={andromeda}
+        extensions={[color, javascript({ jsx: true }),EditorView.lineWrapping, eventExt]}
+        onChange={(value, viewUpdate) => { console.log('value:', value);}}
+      />
+    </div>
   );
 }
 export default App;

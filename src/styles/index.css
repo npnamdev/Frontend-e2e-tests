@@ -28,3 +28,21 @@
 .cm-scroller::-webkit-scrollbar-thumb:hover {
     background: #4a4364;
 }
+
+.namdev{
+    display: grid;
+    grid-template-columns: 250px calc(100% - 250px);
+}
+
+.sidebar{
+    background-color: #241b2f;
+}
+
+.cm-editor{
+    padding-left: 15px;
+    background-color: #262335;
+}
+
+.cm-gutter{
+    background-color: #262335;
+}
