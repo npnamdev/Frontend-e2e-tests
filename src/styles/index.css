@@ -24,14 +24,13 @@
     background: #373149;
 }
 
-/* Handle on hover */
 .cm-scroller::-webkit-scrollbar-thumb:hover {
     background: #4a4364;
 }
 
-.namdev{
+.app-container{
     display: grid;
-    grid-template-columns: 250px calc(100% - 250px);
+    grid-template-columns: 260px calc(100% - 260px);
 }
 
 .sidebar{
