@@ -6,6 +6,7 @@
     box-sizing: border-box;
     font-family: 'IBM Plex Mono', monospace;
     /* font-family: 'Nunito Sans', sans-serif; */
+    font-size: 15px;
 }
 
 
@@ -28,13 +29,39 @@
     background: #4a4364;
 }
 
-.app-container{
-    display: grid;
-    grid-template-columns: 260px calc(100% - 260px);
+
+/* width */
+.sidebar-container::-webkit-scrollbar {
+    width: 10px;
 }
 
-.sidebar{
+/* Track */
+.sidebar-container::-webkit-scrollbar-track {
+    background: #262335;
+}
+
+/* Handle */
+.sidebar-container::-webkit-scrollbar-thumb {
+    background: #373149;
+    border-radius: 10px;
+
+}
+
+.sidebar-container::-webkit-scrollbar-thumb:hover {
+    background: #4a4364;
+}
+
+.app-container{
+    display: grid;
+    /* grid-template-columns: 260px calc(100% - 260px); */
+    grid-template-columns: 1fr 1fr;
+}
+
+.sidebar-container{
     background-color: #241b2f;
+    color: #fff;
+    overflow-y: auto;
+    max-height: 100vh;
 }
 
 .cm-editor{
@@ -44,4 +71,28 @@
 
 .cm-gutter{
     background-color: #262335;
+}
+
+
+.demo{
+    border: 1px solid;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    cursor: pointer;
+}
+
+.btn-wp{
+    display: flex;
+}
+
+.namdev{
+    display: flex;
+    /* flex-direction: column;  */
+}
+
+.namdev-2{
+    display: flex;
+    gap: 3px;
 }

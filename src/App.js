@@ -1,13 +1,11 @@
 import CodeEditor from './components/CodeEditor';
-import MyTreeComponent from './components/MyTreeComponent';
-import Sidebar from './components/sidebar';
+import TreeExample from './components/TreeExample';
 
 function App() {
   return (
     <div className='app-container'>
-      <Sidebar/>
-      {/* <MyTreeComponent/> */}
-      {/* <CodeEditor /> */}
+      <TreeExample />
+      <CodeEditor />
     </div>
   );
 }

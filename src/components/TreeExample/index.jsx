@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BiChevronDown } from "react-icons/bi";
 
 const TreeNode = ({ node, onToggle, onContextMenu, onCreateFile, onCreateFolder, onUpdate, onDelete }) => {
   const { id, name, toggled, type, children } = node;
@@ -34,40 +35,47 @@ const TreeNode = ({ node, onToggle, onContextMenu, onCreateFile, onCreateFolder,
 
   return (
     <div onContextMenu={handleContextMenu}>
-      <div onClick={handleToggle}>
-        {isFolder && <span>{isToggled ? '[-]' : '[+]'}</span>}
-        {name} (ID: {id})
+      <div  className='demo'>
+        <div className='namdev'>
+          <div className='namdev-2' onClick={handleToggle}>
+            {isFolder && <span>{isToggled ? '[-]' : <BiChevronDown />}</span>}
+            <div>{name}</div>  
+          </div>
+          <div className='btn-wp'>
+            {isFolder && (
+              <div style={{ marginLeft: '40px' }}>
+                <button onClick={handleCreateFile}>Create File</button>
+                <button onClick={handleCreateFolder}>Create Folder</button>
+                <button onClick={handleUpdate}>Update</button>
+                <button onClick={handleDelete}>Delete</button>
+              </div>
+            )}
+            {isFile && (
+              <div style={{ marginLeft: '20px' }}>
+                <button onClick={handleUpdate}>Update</button>
+                <button onClick={handleDelete}>Delete</button>
+              </div>
+            )}
+          </div>
+        </div>
+        {isToggled && isFolder && (
+          <div style={{ marginLeft: '20px' }}>
+            {children.map((child, index) => (
+              <TreeNode
+                key={index}
+                node={child}
+                onToggle={onToggle}
+                onContextMenu={onContextMenu}
+                onCreateFile={onCreateFile}
+                onCreateFolder={onCreateFolder}
+                onUpdate={onUpdate}
+                onDelete={onDelete}
+              />
+            ))}
+          </div>
+        )}
       </div>
-      {isToggled && isFolder && (
-        <div style={{ marginLeft: '20px' }}>
-          {children.map((child, index) => (
-            <TreeNode
-              key={index}
-              node={child}
-              onToggle={onToggle}
-              onContextMenu={onContextMenu}
-              onCreateFile={onCreateFile}
-              onCreateFolder={onCreateFolder}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          ))}
-        </div>
-      )}
-      {isFolder && (
-        <div style={{ marginLeft: '40px' }}>
-          <button onClick={handleCreateFile}>Create File</button>
-          <button onClick={handleCreateFolder}>Create Folder</button>
-          <button onClick={handleUpdate}>Update</button>
-          <button onClick={handleDelete}>Delete</button>
-        </div>
-      )}
-      {isFile && (
-        <div style={{ marginLeft: '20px' }}>
-          <button onClick={handleUpdate}>Update</button>
-          <button onClick={handleDelete}>Delete</button>
-        </div>
-      )}
+      
     </div>
   );
 };
@@ -76,7 +84,6 @@ const TreeExample = () => {
   const [data] = useState({
     id: 1,
     name: 'root',
-    toggled: true,
     type: 'folder',
     children: [
       {
@@ -89,8 +96,8 @@ const TreeExample = () => {
             name: 'components',
             type: 'folder',
             children: [
-              { id: 4, name: 'codeEditor.jsx', type: 'file' },
-              { id: 5, name: 'TableBlock.jsx', type: 'file' },
+              { id: 4, name: 'codeEditor.jsx', type: 'file', content: 'Nội dung file codeEditor.jsx' },
+              { id: 5, name: 'TableBlock.jsx', type: 'file', content: 'Nội dung file TableBlock.jsx' },
             ],
           },
           {
@@ -98,18 +105,18 @@ const TreeExample = () => {
             name: 'styles',
             type: 'folder',
             children: [
-              { id: 7, name: 'main.css', type: 'file' },
-              { id: 8, name: 'style.css', type: 'file' },
+              { id: 7, name: 'main.css', type: 'file', content: 'Nội dung file main.css' },
+              { id: 8, name: 'style.css', type: 'file', content: 'Nội dung file style.css' },
             ],
           },
         ],
       },
-      { id: 9, name: 'app.js', type: 'file' },
-      { id: 10, name: 'index.js', type: 'file' },
-      { id: 11, name: '.gitignore', type: 'file' },
-      { id: 12, name: '.package-lock.json', type: 'file' },
-      { id: 13, name: '.package.json', type: 'file' },
-      { id: 14, name: 'README.md', type: 'file' },
+      { id: 9, name: 'app.js', type: 'file' , content: 'Nội dung file app.js' },
+      { id: 10, name: 'index.js', type: 'file', content: 'Nội dung file index.js' },
+      { id: 11, name: '.gitignore', type: 'file', content: 'Nội dung file gitignore' },
+      { id: 12, name: 'package-lock.json', type: 'file', content: 'Nội dung file package-lock.json' },
+      { id: 13, name: 'package.json', type: 'file', content: 'Nội dung file package.json' },
+      { id: 14, name: 'README.md', type: 'file', content: 'Nội dung file README.md' },
     ],
   });
 
@@ -132,12 +139,12 @@ const TreeExample = () => {
     if (userInput === null) {
       return;
     }
-    const newFile = { id: newFileId, name: userInput.trim() || defaultFileName, type: 'file' };
+    const newFile = { id: newFileId, name: userInput.trim() || defaultFileName,content: 'nội dung file', type: 'file' };
     console.log({
-      type: parentNode.type,
-      parentName: parentNode.name,
+      type: newFile.type,
       parentId: parentNode.id,
       name: newFile.name,
+      content: newFile.content,
     });
   };
   
@@ -146,8 +153,7 @@ const TreeExample = () => {
     const newFolderId = generateId();
     const newFolder = { id: newFolderId, name: `New Folder${newFolderId}`, type: 'folder', children: [] };
     console.log({
-      type: parentNode.type,
-      parentName: parentNode.name,
+      type: newFolder.type,
       parentId: parentNode.id,
       name: newFolder.name,
     });
@@ -166,7 +172,7 @@ const TreeExample = () => {
   };
 
   return (
-    <div>
+    <div className='sidebar-container'>
       <TreeNode
         node={data}
         onToggle={onToggle}
@@ -181,3 +187,4 @@ const TreeExample = () => {
 };
 
 export default TreeExample;
+
