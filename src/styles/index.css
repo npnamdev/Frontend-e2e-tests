@@ -51,11 +51,7 @@
     background: #4a4364;
 }
 
-.app-container{
-    display: grid;
-    /* grid-template-columns: 260px calc(100% - 260px); */
-    grid-template-columns: 1fr 1fr;
-}
+
 
 .sidebar-container{
     background-color: #241b2f;
@@ -96,3 +92,10 @@
     display: flex;
     gap: 3px;
 }
+
+
+.app-container{
+    display: grid;
+    grid-template-columns: auto 300px;
+}
+
