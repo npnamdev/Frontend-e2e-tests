@@ -7,7 +7,8 @@ import { color } from '@uiw/codemirror-extensions-color';
 import * as events from '@uiw/codemirror-extensions-events';
 import { javascript } from '@codemirror/lang-javascript';
 
-const CodeEditor = () => {
+const CodeEditor = (props) => {
+  console.log(props.inputValue);
   const eventExt = events.content({
     focus: (evn) => {
       console.log('focus');
