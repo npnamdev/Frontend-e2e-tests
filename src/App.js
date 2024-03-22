@@ -116,14 +116,23 @@ function App() {
           <CodeMirror
             value={inputValue}
             height="100vh"
-            width='100%'
-            style={{ fontSize: '14px' }}
+            style={{ fontSize: '14px', }}
             theme={andromeda}
             extensions={[color, javascript({ jsx: true }), EditorView.lineWrapping, eventExt]}
             onChange={handleCodeMiroorChange}
             placeholder="Please enter the code."
           />
-          <div className="chat-container">
+          <div className='demonam'>
+            <h2>Online</h2>
+            <ul>
+                {onlineUsers.map((user, index) => (
+                  <li key={index}>{user}</li>
+                ))}
+            </ul>
+          </div>
+
+
+          {/* <div className="chat-container">
             <div>
               <h3>Online Users:</h3>
               <ul style={{ borderBottom: '1px solid black' }}>
@@ -146,7 +155,7 @@ function App() {
               <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
               <button type="submit">Send</button>
             </form>
-          </div>
+          </div> */}
         </>
       )}
     </div>

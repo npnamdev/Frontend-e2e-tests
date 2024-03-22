@@ -96,6 +96,37 @@
 
 .app-container{
     display: grid;
-    grid-template-columns: auto 300px;
+    grid-template-columns: auto 150px;
 }
 
+.demonam{
+    background-color: #241b2f;
+    color: white;
+    border-left: 1px solid gray;
+}
+
+
+.demonam h2{
+    border-bottom: 1px solid gray;
+    text-align: center;
+    padding: 20px 0px;
+    color: rgb(62, 219, 62);
+}
+
+.demonam ul{
+    padding: 15px;
+    text-align: center;
+    list-style: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.demonam ul li{
+   border: 1px solid;
+   padding: 10px 0px;
+   border-radius: 20px;
+}
