@@ -1,33 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('https://socket-io-server-6592.onrender.com');
+const socket = io("https://socket-io-server-6592.onrender.com", {
+  transports: ["websocket"]
+});
 
 function App() {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     socket.on('updateInput', (data) => {
-      setInputValue(data); // Cập nhật giá trị input từ server
+      setInputValue(data); 
     });
 
     return () => {
-      socket.disconnect();
+      socket.off('updateInput');
     };
-  }, []);
+  }, []); 
 
   const handleInputChange = (event) => {
-    const newValue = event.target.value; // Lưu trữ giá trị mới từ sự kiện thay đổi
-    setInputValue(newValue); // Cập nhật giá trị input với giá trị mới
-  
-    // Gửi giá trị input mới lên server
+    const newValue = event.target.value; 
+    setInputValue(newValue); 
     socket.emit('updateInput', newValue); 
   };
-  
 
   return (
     <div>
-      <input
+      <textarea
         type="text"
         value={inputValue}
         onChange={handleInputChange}
