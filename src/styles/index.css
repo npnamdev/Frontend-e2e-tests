@@ -130,3 +130,9 @@
    padding: 10px 0px;
    border-radius: 20px;
 }
+
+
+.video-custom{
+    width: 1000px;
+    cursor: pointer;
+}
